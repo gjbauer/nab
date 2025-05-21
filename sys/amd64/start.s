@@ -289,8 +289,8 @@ isr_common_stub:
 	movl	%eax, %fs
 	movl	%eax, %gs
 	movl	%esp, %eax
-	pushl	%eax
-	movl	_fault_handler, %eax
+	pushl	%eax		# TODO : Implement fault handler!!
+	movl	0x0, %eax	# _fault_handler
 	calll	*%eax
 	popl	%eax
 	popl	%gs
