@@ -80,7 +80,7 @@ mboot:
 	.long end
 	.long _start
 stublet:
-	#call _main
+	call main
 	jmp stublet
 
 gdt_flush:
