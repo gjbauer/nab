@@ -52,9 +52,9 @@
 .global irq14
 .global irq15
 
-.global start
+.global _start
 
-start:
+_start:
 	movl	$0x2000, %esp           # imm = 0x2000
 	jmp	stublet
 	nop
@@ -290,7 +290,7 @@ isr_common_stub:
 	movl	%eax, %gs
 	movl	%esp, %eax
 	pushl	%eax		# TODO : Implement fault handler!!
-	movl	0x0, %eax	# _fault_handler
+	movl	fault_handler, %eax	# _fault_handler
 	calll	*%eax
 	popl	%eax
 	popl	%gs

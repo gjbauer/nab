@@ -1,8 +1,8 @@
 
 all:
-	$(MAKE) -C amd64
+	$(MAKE) -C i386
 	$(MAKE) -C kern
-	ld -melf_i386 -T link.ld -o kernel.bin amd64/*.o kern/*.o
+	ld -melf_i386 -T i386/link.ld -o kernel.bin i386/*.o kern/*.o
 
 clean:
 	rm */*.o

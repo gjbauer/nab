@@ -51,7 +51,11 @@ void keyboard_handler(struct regs *r)
     unsigned char scancode;
 
     /* Read from the keyboard's data buffer */
+    #ifdef __i386__
     scancode = inportb(0x60);
+    #elif defined(__risv)
+    // TODO : RISC-V equivalent!!
+    #endif
 
     /* If the top bit of the byte we read from the keyboard is
     *  set, that means that a key has just been released */
