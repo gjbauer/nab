@@ -60,16 +60,25 @@ _start:
 	nop
 
 mboot:
-	addb	0x31bad(%eax), %dh
-	addl	%eax, (%eax)
-	sti
-	decl	%edi
-	pushl	%ecx
-	inb	$0x8, %al
-       
-	addb	%al, (%eax)
-	addb	%ch, %al
-
+	.equ MULTIBOOT_PAGE_ALIGN, 1<<0
+	.equ MULTIBOOT_MEMORY_INFO, 1<<1
+	.equ MULTIBOOT_AOUT_KLUDGE, 1<<16
+	.equ MULTIBOOT_HEADER_MAGIC, 0x1BADB002
+	.equ MULTIBOOT_HEADER_FLAGS, MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO | MULTIBOOT_AOUT_KLUDGE
+	.equ MULTIBOOT_CHECKSUM, -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_HEADER_FLAGS)
+	
+	# This is the GRUB Multiboot header. A boot signature
+	.long MULTIBOOT_HEADER_MAGIC
+	.long MULTIBOOT_HEADER_FLAGS
+	.long MULTIBOOT_CHECKSUM
+    
+	# AOUT kludge - must be physical addresses. Make a note of these:
+	# The linker script fills in the data for these ones!
+	.long mboot
+	.long code
+	.long bss
+	.long end
+	.long _start
 stublet:
 	#call _main
 	jmp stublet
